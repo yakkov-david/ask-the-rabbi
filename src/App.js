@@ -25,7 +25,7 @@ function App() {
 export default App;*/
 
 // src/App.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import QuestionForm from './QuestionForm';
 import QuestionsList from './QuestionsList';
 
@@ -43,14 +43,18 @@ function App() {
 
   const addQuestion = async (question) => {
     const newQuestion = { question, answer: 'Waiting for an answer...' };
-    setQuestions([...questions, newQuestion]);
+  
+    setQuestions(prevQuestions => [...prevQuestions, newQuestion]);
   
     const answer = await mockAnswerQuestion(question);
-    const updatedQuestions = questions.map((q) =>
-      q.question === question ? { ...q, answer } : q
-    );
-    setQuestions(updatedQuestions);
+  
+    setQuestions(prevQuestions => {
+      return prevQuestions.map((q) =>
+        q.question === question ? { ...q, answer } : q
+      );
+    });
   };
+  
   
   return (
     <div className="App">
